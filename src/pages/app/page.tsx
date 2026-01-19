@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Inbox as InboxIcon, Target, BarChart3 } from 'lucide-react';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import type { Task } from '../../types/task';
+import type { CategoryTask, Task } from '../../types/task';
 import Inbox from '../inbox/page';
 import Today from '../today/page';
 import Stats from '../stats/page';
@@ -11,11 +11,14 @@ type TabType = 'inbox' | 'today' | 'stats';
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabType>('today');
   const [tasks, setTasks] = useLocalStorage<Task[]>('daily-focus-tasks', []);
+  const [archivedTasks, setArchivedTasks] = useLocalStorage<Task[]>('archived-tasks', []);
+  const [categoryTasks, setCategoryTasks] = useLocalStorage<CategoryTask[]>('super-category-tasks', []);
 
-  const handleAddTask = (text: string) => {
+  const handleAddTask = (task: string | Task) => {
+    if (typeof(task) === 'string'){
     const newTask: Task = {
-      id: Date.now().toString(),
-      text,
+      id: crypto.randomUUID(),
+      text: task,
       importance: 2,
       hours: 0,
       minutes: 30,
@@ -24,31 +27,124 @@ export default function App() {
       createdAt: Date.now()
     };
     setTasks([...tasks, newTask]);
+  } else {
+    setTasks([...tasks, task])
+  }
   };
+  const handleAddCategorySubtask = (category: CategoryTask, text: string) => {
+    const newTask: Task = {
+      id: crypto.randomUUID(),
+      text: text,
+      superCategory: category, 
+      importance: category.importance,
+      hours: 0, 
+      minutes: 30,
+      deadline: category.deadline, 
+      completed: false,
+      createdAt: Date.now()
+    };  
+    setTasks(prev => [...prev, newTask]);
+    setCategoryTasks(prev => prev.map(c => {
+      if (c.id === category.id) {
+        const currentSubtasks = c.subTasks || [];
+        return {...c, subTasks: [...currentSubtasks, newTask] };
+      }
+      return c;
+    }))
+};
 
   const handleDeleteTask = (id: string) => {
     setTasks(tasks.filter(t => t.id !== id));
   };
 
-  const handlePrioritizeTask = (updatedTask: Task) => {
-    setTasks(tasks.map(t => t.id === updatedTask.id ? updatedTask : t));
+  const handleDeleteCategoryTask = (id: string) => {
+    const categoryToDelete = categoryTasks.find(c => c.id ===  id);
+    if (!categoryToDelete) return;
+
+    setCategoryTasks(prev => prev.filter(c => c.id !== id));
+    setTasks(prevTasks => prevTasks.filter(t => t.superCategory?.id !== id));
+  }
+
+  const handleStoreTask = (id: string) => {
+    const findTask = tasks.find(t => t.id === id);
+    setTasks(prev => prev.filter(t => t.id !== id));
+    setArchivedTasks(prev => [...prev, findTask]);
+  }
+
+  const handlePrioritizeTask = (inputTask: Task) => {
+    // is it new task?
+    const exists = tasks.some(t => t.id === inputTask.id);
+    if (exists) {
+      // existing task : edit
+      setTasks(tasks.map(t => t.id === inputTask.id ? inputTask : t));
+    } else {
+      // new task : add automatically
+      setTasks([...tasks, inputTask]);
+    }
   };
 
+  const handlePrioritizeCategory = (inputCategory: CategoryTask, subTasks: Task[], originalTaskId?: string) => {  
+    setCategoryTasks(prev => {
+      const exists = prev.some(c => c.id === inputCategory.id);
+      
+      // old: edit
+      if (exists) return prev.map(c => c.id === inputCategory.id ? inputCategory : c);
+      // new: add
+      return [...prev, inputCategory];
+    });
+
+    setTasks(prevTasks => {
+      let cleanedTasks = originalTaskId ? prevTasks.filter(t => t.id !== originalTaskId) : prevTasks
+
+      cleanedTasks = cleanedTasks.filter(t => t.superCategory?.id !== inputCategory.id);
+      return [...cleanedTasks, ...subTasks];
+    })
+  };
+
+  const checkAndCompleteParent = (currentTasks: Task[], modifiedTaskId: string) => {
+    const modifiedTask: Task = currentTasks.find(t => t.id === modifiedTaskId)
+    const parentId = modifiedTask?.superCategory?.id;
+
+    if (!parentId) return;
+    
+    // tasks belonging to same parent
+    const siblings = currentTasks.filter(t => t.superCategory?.id === parentId);
+    const allSubtasksComplete = siblings.every(t => t.completed);
+
+    setCategoryTasks(prev => prev.map(category => {
+      if (category.id === parentId) {
+        if (category.completed !== allSubtasksComplete) {
+          return {
+            ...category,
+            completed: allSubtasksComplete,
+            completedAt: allSubtasksComplete ? Date.now() : undefined
+          };
+        }
+      }
+      return category;
+    }))
+  }
+
   const handleToggleComplete = (id: string) => {
-    setTasks(tasks.map(t => 
-      t.id === id 
+    const newTasks = tasks.map(t =>
+      t.id === id
         ? { ...t, completed: !t.completed, completedAt: !t.completed ? Date.now() : undefined }
         : t
-    ));
+    );
+    setTasks(newTasks);
+    checkAndCompleteParent(newTasks, id);
   };
 
   const handleCompleteWithTime = (id: string, actualHours: number, actualMinutes: number) => {
-    setTasks(tasks.map(t => 
-      t.id === id 
-        ? { ...t, completed: true, completedAt: Date.now(), actualHours, actualMinutes }
-        : t
-    ));
-  };
+    const newTasks = tasks.map(t => 
+        t.id === id 
+          ? { ...t, completed: true, completedAt: Date.now(), actualHours, actualMinutes }
+          : t
+      );
+
+    setTasks(newTasks);
+    checkAndCompleteParent(newTasks, id);
+};
 
   const getCurrentDate = () => {
     const now = new Date();
@@ -76,20 +172,29 @@ export default function App() {
           {activeTab === 'inbox' && (
             <Inbox
               tasks={tasks}
+              categories={categoryTasks}
               onAddTask={handleAddTask}
+              onAddSubtask={handleAddCategorySubtask}
               onDeleteTask={handleDeleteTask}
+              onDeleteCategory={handleDeleteCategoryTask}
               onPrioritizeTask={handlePrioritizeTask}
+              onPrioritizeCategory={handlePrioritizeCategory}
             />
           )}
           {activeTab === 'today' && (
             <Today
               tasks={tasks}
+              onAddTask={handleAddTask}
               onToggleComplete={handleToggleComplete}
               onDeleteTask={handleDeleteTask}
+              onDeleteCategory={handleDeleteCategoryTask}
+              onStoreTask={handleStoreTask}
               onCompleteWithTime={handleCompleteWithTime}
+              onPrioritizeTask={handlePrioritizeTask}
+              onPrioritizeCategory={handlePrioritizeCategory}
             />
           )}
-          {activeTab === 'stats' && <Stats tasks={tasks} />}
+          {activeTab === 'stats' && <Stats tasks={tasks} archives={archivedTasks} />}
         </main>
 
         <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40">

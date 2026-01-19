@@ -1,4 +1,4 @@
-import type { Task, Quadrant, DeadlineType } from '../types/task';
+import type { Quadrant, DeadlineType, Task } from '../types/task';
 
 export function calculateQuadrant(
   importance: number,
@@ -12,6 +12,18 @@ export function calculateQuadrant(
   if (!isUrgent && isImportant) return 'Q2';
   if (isUrgent && !isImportant) return 'Q3';
   return 'Q4';
+}
+
+export function calculateTaskQuadrant(task: Task): Quadrant {
+  if (task.superCategory) {
+    return calculateQuadrant(
+      task.superCategory.importance,
+      task.superCategory.deadline,
+      task.superCategory.specificDate
+    );
+  }
+
+  return calculateQuadrant(task.importance, task.deadline, task.specificDate);
 }
 
 function calculateUrgency(deadline: DeadlineType, specificDate?: string): boolean {

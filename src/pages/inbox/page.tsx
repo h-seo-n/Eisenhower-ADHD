@@ -1,30 +1,53 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Trash2, X } from 'lucide-react';
-import type { Task } from '../../types/task';
+import type { CategoryTask, Task } from '../../types/task';
 import PrioritizeModal from '../../components/feature/PrioritizeModal';
+import InboxCategoryItem from '@/components/feature/InboxCategoryItem';
 
 interface InboxProps {
   tasks: Task[];
-  onAddTask: (text: string) => void;
+  categories: CategoryTask[];
+  onAddTask: (task: string | Task) => void;
+  onAddSubtask: (category: CategoryTask, task: string) => void;
   onDeleteTask: (id: string) => void;
+  onDeleteCategory: (id: string) => void;
   onPrioritizeTask: (task: Task) => void;
+  onPrioritizeCategory: (category: CategoryTask, subTasks: Task[]) => void;
 }
 
-export default function Inbox({ tasks, onAddTask, onDeleteTask, onPrioritizeTask }: InboxProps) {
+export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDeleteTask, onDeleteCategory, onPrioritizeTask, onPrioritizeCategory }: InboxProps) {
   const [inputValue, setInputValue] = useState('');
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
-  const handleAdd = () => {
+  const handleAddByEnter = () => {
     if (inputValue.trim()) {
+      // on input + enter : (cannot make categories with this route)
       onAddTask(inputValue.trim());
       setInputValue('');
     }
   };
 
+  const handleAddByClick = () => {
+          const task: Task = {
+              id: crypto.randomUUID(),
+              text: "",
+              importance: 2,
+              hours: 0,
+              minutes: 30,
+              deadline: 'Today',
+              completed: false,
+              createdAt: Date.now()
+      };
+      setSelectedTask(task);
+      setInputValue('');
+
+  }
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      handleAdd();
+      e.preventDefault();
+      handleAddByEnter();
     }
   };
 
@@ -32,7 +55,26 @@ export default function Inbox({ tasks, onAddTask, onDeleteTask, onPrioritizeTask
     setInputValue('');
   };
 
-  const inboxTasks = tasks.filter(t => !t.quadrant);
+  const inboxTasks = tasks.filter(t => (!t.quadrant && !t.superCategory));
+
+  // category - inbox
+  interface InboxCategory {
+    category: CategoryTask;
+    subtasks: Task[];
+  }
+
+  const inboxCategories: InboxCategory[] = categories.reduce<InboxCategory[]>((acc, category) => {
+    const categroySubtasks = tasks.filter(t => t.superCategory?.id === category.id);
+    const unassignedSubtasks = categroySubtasks.filter(t => !t.quadrant);
+
+    if (unassignedSubtasks.length > 0) {
+      acc.push({
+        category: category,
+        subtasks: unassignedSubtasks
+      });
+    }
+    return acc;
+  }, []);
 
   return (
     <div className="pb-20">
@@ -41,14 +83,14 @@ export default function Inbox({ tasks, onAddTask, onDeleteTask, onPrioritizeTask
         <p className="text-teal-50 text-sm">Brain dump zone - capture everything</p>
       </div>
 
-      <div className="p-4 space-y-4">
+      <div className="p-4 space-y-2">
         <div className="flex gap-2">
           <div className="flex-1 relative">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onKeyUp={handleKeyPress}
               placeholder="Add a new thought..."
               className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
             />
@@ -62,7 +104,7 @@ export default function Inbox({ tasks, onAddTask, onDeleteTask, onPrioritizeTask
             )}
           </div>
           <button
-            onClick={handleAdd}
+            onClick={handleAddByClick}
             className="w-12 h-12 flex items-center justify-center bg-teal-500 text-white rounded-xl hover:bg-teal-600 transition-colors shadow-md whitespace-nowrap"
           >
             <Plus className="w-5 h-5" />
@@ -70,12 +112,27 @@ export default function Inbox({ tasks, onAddTask, onDeleteTask, onPrioritizeTask
         </div>
 
         <div className="space-y-2">
-          {inboxTasks.length === 0 ? (
+          {inboxTasks.length === 0 && inboxCategories.length === 0 && 
             <div className="text-center py-12 text-gray-400">
               <p className="text-sm">No thoughts yet. Start adding!</p>
-            </div>
-          ) : (
-            inboxTasks.map((task) => (
+            </div>}
+              
+          {inboxCategories.map((catItem) => {
+            const categoryFound = categories.find(c => c.id === catItem.category.id);
+            console.log("category found:", categoryFound);
+            return (
+              <InboxCategoryItem
+                  key={catItem.category.id}
+                  category={categoryFound}
+                  subtasks={catItem.subtasks}
+                  onAddSubtask={onAddSubtask}
+                  onDeleteTask={onDeleteTask}
+                  onSelectTask={setSelectedTask}
+              />                  
+            );
+          })}
+            
+          {inboxTasks.map((task) => (
               <motion.div
                 key={task.id}
                 initial={{ opacity: 0, y: 10 }}
@@ -99,15 +156,19 @@ export default function Inbox({ tasks, onAddTask, onDeleteTask, onPrioritizeTask
                 </div>
               </motion.div>
             ))
-          )}
+          }
         </div>
       </div>
 
       <PrioritizeModal
+        viewPage='Inbox'
         isOpen={!!selectedTask}
+        onAddTask={onAddTask}
+        onDeleteTask={onDeleteTask}
         onClose={() => setSelectedTask(null)}
         task={selectedTask}
-        onSave={onPrioritizeTask}
+        onSaveTask={onPrioritizeTask}
+        onSaveCategory={onPrioritizeCategory}
       />
     </div>
   );

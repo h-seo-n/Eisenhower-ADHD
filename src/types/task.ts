@@ -16,6 +16,13 @@ export interface Task {
   completedAt?: number;
   actualHours?: number;
   actualMinutes?: number;
+
+  superCategory?: CategoryTask;
+}
+
+export interface CategoryTask extends Omit<Task, 'superCategory'|'hours'|'minutes'|'actualHours'|'actualMinutes'|'quadrant'>  {
+  id: string;
+  subTasks: Task[];
 }
 
 export interface TimeEntry {
