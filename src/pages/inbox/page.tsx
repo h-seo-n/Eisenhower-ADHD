@@ -4,6 +4,7 @@ import { Plus, Trash2, X } from 'lucide-react';
 import type { CategoryTask, Task } from '../../types/task';
 import PrioritizeModal from '../../components/feature/PrioritizeModal';
 import InboxCategoryItem from '@/components/feature/InboxCategoryItem';
+import FloatingButton from '@/components/feature/FloatingButton';
 
 interface InboxProps {
   tasks: Task[];
@@ -103,12 +104,12 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
               </button>
             )}
           </div>
-          <button
+          {/* <button
             onClick={handleAddByClick}
             className="w-12 h-12 flex items-center justify-center bg-teal-500 text-white rounded-xl hover:bg-teal-600 transition-colors shadow-md whitespace-nowrap"
           >
             <Plus className="w-5 h-5" />
-          </button>
+          </button> */}
         </div>
 
         <div className="space-y-2">
@@ -160,6 +161,27 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
         </div>
       </div>
 
+      <div className="fixed bottom-[calc(5rem+1.5rem)] left-0 right-0 mx-auto w-full max-w-md px-6 pointer-events-none z-50">
+        <div className="flex justify-end pointer-events-auto">
+          <FloatingButton 
+            onClick={() => {
+              const newTask: Task = {
+                id: crypto.randomUUID(),
+                text: "",
+                importance: 2,
+                hours: 0,
+                minutes: 30,
+                deadline: 'Today',
+                completed: false,
+                createdAt: Date.now()
+              };
+              setSelectedTask(newTask);
+            }}
+            className='bg-teal-500'
+          />
+        </div>
+      </div>
+
       <PrioritizeModal
         viewPage='Inbox'
         isOpen={!!selectedTask}
@@ -170,6 +192,7 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
         onSaveTask={onPrioritizeTask}
         onSaveCategory={onPrioritizeCategory}
       />
+
     </div>
   );
 }

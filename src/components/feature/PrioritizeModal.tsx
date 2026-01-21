@@ -215,8 +215,12 @@ export default function PrioritizeModal({ isOpen, onClose, task, onAddTask, onDe
                 type="number"
                 min="0"
                 max="12"
-                value={hours}
-                onChange={(e) => setHours(Math.min(12, Math.max(0, Number(e.target.value))))}
+                value={hours.toString()}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value, 10);
+                  const cleanValue = isNaN(val) ? 0 : val;
+                  setHours(Math.min(12, Math.max(0, cleanValue)));
+                }}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
               />
             </div>
@@ -227,7 +231,11 @@ export default function PrioritizeModal({ isOpen, onClose, task, onAddTask, onDe
                 min="0"
                 max="59"
                 value={minutes}
-                onChange={(e) => setMinutes(Math.min(59, Math.max(0, Number(e.target.value))))}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value, 10);
+                  const cleanValue = isNaN(val) ? 0 : val;
+                  setMinutes(Math.min(59, Math.max(0, cleanValue)));
+                }}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
               />
             </div>
