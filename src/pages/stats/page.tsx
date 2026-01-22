@@ -69,7 +69,7 @@ export default function Stats({ tasks, archives }: StatsProps) {
     {
       icon: TrendingUp,
       label: 'Time Accuracy',
-      value: `${stats.avgAccuracy}%`,
+      value: `${stats.avgAccuracy}% ${stats.avgAccuracy > 100 ? "(over)" : stats.avgAccuracy > 0 && stats.avgAccuracy < 100 ? "(under)" : ""}`,
       color: 'from-purple-500 to-purple-600'
     }
   ];
@@ -103,7 +103,6 @@ export default function Stats({ tasks, archives }: StatsProps) {
             </div>
           </motion.div>
         ))}
-        {/* TODO : make accordion block(notion toggle), and display list of archived tasks */}
         {/* Archives Accordion */}
         <div className="mt-6">
           <button

@@ -86,8 +86,13 @@ export default function FocusTimer({ isOpen, onClose, task, onComplete }: FocusT
                   type="number"
                   min="0"
                   max="12"
-                  value={actualHours}
-                  onChange={(e) => setActualHours(Math.min(12, Math.max(0, Number(e.target.value))))}
+                  value={actualHours.toString()}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value, 10);
+                    const cleanValue = isNaN(val) ? 0 : val;
+                    setActualHours(Math.min(12, Math.max(0, cleanValue)));
+                  
+                  }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
                 />
               </div>
@@ -97,8 +102,12 @@ export default function FocusTimer({ isOpen, onClose, task, onComplete }: FocusT
                   type="number"
                   min="0"
                   max="59"
-                  value={actualMinutes}
-                  onChange={(e) => setActualMinutes(Math.min(59, Math.max(0, Number(e.target.value))))}
+                  value={actualMinutes.toString()}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value, 10);
+                    const cleanValue = isNaN(val) ? 0 : val;
+                    setActualMinutes(Math.min(59, Math.max(0, cleanValue)));
+                  }}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
                 />
               </div>
