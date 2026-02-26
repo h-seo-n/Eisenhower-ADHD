@@ -4,6 +4,7 @@ import type { Task, DeadlineType, CategoryTask } from '../../types/task';
 import { calculateTaskQuadrant } from '../../utils/taskCalculator';
 import { Calendar, Clock, AlertCircle, PencilIcon, ListPlus, X, Plus, Trash2, PinIcon } from 'lucide-react';
 import { isTask } from '@/utils/typeGuards';
+import { useTranslation } from 'react-i18next';
 
 interface PrioritizeModalProps {
   isOpen: boolean;
@@ -133,10 +134,11 @@ export default function PrioritizeModal({ isOpen, onClose, task, onAddTask, onDe
     }
   };
 
+  const { t } = useTranslation();
   const isSubtask: boolean = Boolean(isTask(task) && task.superCategory);
-  const importanceLabels = ['Low', 'Medium', 'High', 'Critical'];
+  const importanceLabels = [t('importance.low'), t('importance.medium'), t('importance.high'), t('importance.critical')];
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Prioritize Task">
+    <Modal isOpen={isOpen} onClose={onClose} title={t('prioritize.title')}>
       <div className="space-y-6">
       {isSubtask && (
         <div>
@@ -153,7 +155,7 @@ export default function PrioritizeModal({ isOpen, onClose, task, onAddTask, onDe
           </label>
               <input
               type="text"
-              placeholder='write your task'
+              placeholder={t('prioritize.placeholder')}
               value={content}
               onChange={(e) => setContent(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
@@ -171,14 +173,14 @@ export default function PrioritizeModal({ isOpen, onClose, task, onAddTask, onDe
               onChange={()=>setIsCategoryTask(t => !t)}
               className='w-5 h-5 rounded border-gray-300 text-teal-500 focus:ring-teal-500 cursor-pointer flex-shrink-0 items-center'
             />
-            <label htmlFor='subtask' className='text-sm font-medium text-gray-700 gap-2'>Divide to subtasks</label>
+            <label htmlFor='subtask' className='text-sm font-medium text-gray-700 gap-2'>{t('prioritize.divideToSubtasks')}</label>
           <hr />
         </div>
         }
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
             <AlertCircle className="w-4 h-4" />
-            {isSubtask ? "Category Importance Level": "Importance Level"}
+            {isSubtask ? t('prioritize.categoryImportanceLevel') : t('prioritize.importanceLevel')}
           </label>
           <div className="space-y-2">
             <input
@@ -206,11 +208,11 @@ export default function PrioritizeModal({ isOpen, onClose, task, onAddTask, onDe
         {!isCategoryTask && <div>
           <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
             <Clock className="w-4 h-4" />
-            Estimated Duration
+            {t('prioritize.estimatedDuration')}
           </label>
           <div className="flex gap-3">
             <div className="flex-1">
-              <label className="block text-xs text-gray-500 mb-1">Hours</label>
+              <label className="block text-xs text-gray-500 mb-1">{t('common.hours')}</label>
               <input
                 type="number"
                 min="0"
@@ -225,7 +227,7 @@ export default function PrioritizeModal({ isOpen, onClose, task, onAddTask, onDe
               />
             </div>
             <div className="flex-1">
-              <label className="block text-xs text-gray-500 mb-1">Minutes</label>
+              <label className="block text-xs text-gray-500 mb-1">{t('common.minutes')}</label>
               <input
                 type="number"
                 min="0"
@@ -245,23 +247,31 @@ export default function PrioritizeModal({ isOpen, onClose, task, onAddTask, onDe
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
             <Calendar className="w-4 h-4" />
-            {isSubtask ? "Category Deadline" : "Deadline"}
+            {isSubtask ? t('prioritize.categoryDeadline') : t('prioritize.deadline')}
           </label>
           <div className="space-y-2">
-            {(['Today', 'Tomorrow', 'Specific Date', 'No Deadline'] as DeadlineType[]).map((option) => (
-              <label key={option} className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="radio"
-                  name="deadline"
-                  value={option}
-                  checked={deadline === option}
-                  onChange={(e) => setDeadline(e.target.value as DeadlineType)}
-                  disabled={isSubtask}
-                  className="w-4 h-4 text-teal-500 focus:ring-teal-500"
-                />
-                <span className="text-sm text-gray-700">{option}</span>
-              </label>
-            ))}
+            {(['Today', 'Tomorrow', 'Specific Date', 'No Deadline'] as DeadlineType[]).map((option) => {
+              const deadlineKey: Record<DeadlineType, string> = {
+                'Today': t('deadline.today'),
+                'Tomorrow': t('deadline.tomorrow'),
+                'Specific Date': t('deadline.specificDate'),
+                'No Deadline': t('deadline.noDeadline'),
+              };
+              return (
+                <label key={option} className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="deadline"
+                    value={option}
+                    checked={deadline === option}
+                    onChange={(e) => setDeadline(e.target.value as DeadlineType)}
+                    disabled={isSubtask}
+                    className="w-4 h-4 text-teal-500 focus:ring-teal-500"
+                  />
+                  <span className="text-sm text-gray-700">{deadlineKey[option]}</span>
+                </label>
+              );
+            })}
           </div>
           
           {deadline === 'Specific Date' && (
@@ -278,7 +288,7 @@ export default function PrioritizeModal({ isOpen, onClose, task, onAddTask, onDe
         <div className="space-y-3">
           <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
             <ListPlus className="w-4 h-4" />
-            Add Subtasks
+            {t('prioritize.addSubtasks')}
           </label>
           <div className='flex gap-2 items-center'>
             <div className='flex-1 relative'>
@@ -287,7 +297,7 @@ export default function PrioritizeModal({ isOpen, onClose, task, onAddTask, onDe
                 value={subtaskInput}
                 onChange={(e) => setSubtaskInput(e.target.value)}
                 onKeyUp={(e)=> (e.key === 'Enter') && handleAddSubtaskItem() }
-                placeholder="Add a new subtask..."
+                placeholder={t('prioritize.subtaskPlaceholder')}
                 className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
               />
               {subtaskInput && (
@@ -339,7 +349,7 @@ export default function PrioritizeModal({ isOpen, onClose, task, onAddTask, onDe
           onClick={handleSave}
           className="w-full bg-teal-500 text-white py-3 rounded-lg font-medium hover:bg-teal-600 transition-colors whitespace-nowrap"
         >
-          Save to Today
+          {t('prioritize.saveToToday')}
         </button>
       </div>
     </Modal>

@@ -5,10 +5,12 @@ import type { CategoryTask, Task } from '../../types/task';
 import Inbox from '../inbox/page';
 import Today from '../today/page';
 import Stats from '../stats/page';
+import { useTranslation } from 'react-i18next';
 
 type TabType = 'inbox' | 'today' | 'stats';
 
 export default function App() {
+  const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useState<TabType>('today');
   const [tasks, setTasks] = useLocalStorage<Task[]>('daily-focus-tasks', []);
   const [archivedTasks, setArchivedTasks] = useLocalStorage<Task[]>('archived-tasks', []);
@@ -149,20 +151,21 @@ export default function App() {
   const getCurrentDate = () => {
     const now = new Date();
     const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', weekday: 'short' };
-    return now.toLocaleDateString('en-US', options);
+    const locale = i18n.language.startsWith('ko') ? 'ko-KR' : 'en-US';
+    return now.toLocaleDateString(locale, options);
   };
 
   const tabs = [
-    { id: 'inbox' as TabType, label: 'Inbox', icon: InboxIcon },
-    { id: 'today' as TabType, label: 'Today', icon: Target },
-    { id: 'stats' as TabType, label: 'Stats', icon: BarChart3 }
+    { id: 'inbox' as TabType, label: t('nav.inbox'), icon: InboxIcon },
+    { id: 'today' as TabType, label: t('nav.today'), icon: Target },
+    { id: 'stats' as TabType, label: t('nav.stats'), icon: BarChart3 }
   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-[480px] mx-auto bg-white min-h-screen shadow-xl relative">
         <header className="bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between sticky top-0 z-30">
-          <h1 className="text-lg font-bold text-gray-900">My Daily Focus</h1>
+          <h1 className="text-lg font-bold text-gray-900">{t('app.title')}</h1>
           <div className="text-right">
             <p className="text-xl font-bold text-gray-900">{getCurrentDate()}</p>
           </div>

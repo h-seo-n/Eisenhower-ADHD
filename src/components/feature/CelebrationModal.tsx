@@ -8,6 +8,7 @@ interface CelebrationModalProps {
 }
 
 export default function CelebrationModal({ isOpen, onClose }: CelebrationModalProps) {
+  const { t } = useTranslation();
   useEffect(() => {
     if (isOpen) {
       const timer = setTimeout(() => {
@@ -43,8 +44,8 @@ export default function CelebrationModal({ isOpen, onClose }: CelebrationModalPr
         >
           <Trophy className="w-10 h-10 text-white" />
         </motion.div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Great Job!</h2>
-        <p className="text-gray-600">You crushed a critical task! 🎉</p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('celebration.title')}</h2>
+        <p className="text-gray-600">{t('celebration.message')}</p>
       </motion.div>
     </motion.div>
   );

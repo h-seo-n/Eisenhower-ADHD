@@ -5,6 +5,7 @@ import type { CategoryTask, Task } from '../../types/task';
 import PrioritizeModal from '../../components/feature/PrioritizeModal';
 import InboxCategoryItem from '@/components/feature/InboxCategoryItem';
 import FloatingButton from '@/components/feature/FloatingButton';
+import { useTranslation } from 'react-i18next';
 
 interface InboxProps {
   tasks: Task[];
@@ -18,6 +19,7 @@ interface InboxProps {
 }
 
 export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDeleteTask, onDeleteCategory, onPrioritizeTask, onPrioritizeCategory }: InboxProps) {
+  const { t } = useTranslation();
   const [inputValue, setInputValue] = useState('');
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
@@ -80,8 +82,8 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
   return (
     <div className="pb-20">
       <div className="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-6 rounded-b-3xl shadow-lg">
-        <h1 className="text-2xl font-bold mb-2">Inbox</h1>
-        <p className="text-teal-50 text-sm">Brain dump zone - capture everything</p>
+        <h1 className="text-2xl font-bold mb-2">{t('inbox.title')}</h1>
+        <p className="text-teal-50 text-sm">{t('inbox.subtitle')}</p>
       </div>
 
       <div className="p-4 space-y-2">
@@ -92,7 +94,7 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyUp={handleKeyPress}
-              placeholder="Add a new thought..."
+              placeholder={t('inbox.placeholder')}
               className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
             />
             {inputValue && (
@@ -115,7 +117,7 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
         <div className="space-y-2">
           {inboxTasks.length === 0 && inboxCategories.length === 0 && 
             <div className="text-center py-12 text-gray-400">
-              <p className="text-sm">No thoughts yet. Start adding!</p>
+              <p className="text-sm">{t('inbox.empty')}</p>
             </div>}
               
           {inboxCategories.map((catItem) => {

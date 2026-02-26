@@ -8,6 +8,7 @@ import CelebrationModal from '../../components/feature/CelebrationModal';
 import FocusTimer from '../../components/feature/FocusTimer';
 import PrioritizeModal from '@/components/feature/PrioritizeModal';
 import FloatingButton from '@/components/feature/FloatingButton';
+import { useTranslation } from 'react-i18next';
 
 interface TodayProps {
   tasks: Task[];
@@ -22,6 +23,7 @@ interface TodayProps {
 }
 
 export default function Today({ tasks, onAddTask, onToggleComplete, onDeleteTask, onDeleteCategory, onStoreTask, onCompleteWithTime, onPrioritizeTask, onPrioritizeCategory }: TodayProps) {
+  const { t } = useTranslation();
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [showCelebration, setShowCelebration] = useState(false);
   const [timerTask, setTimerTask] = useState<Task | null>(null);
@@ -76,8 +78,8 @@ export default function Today({ tasks, onAddTask, onToggleComplete, onDeleteTask
   return (
     <div className="pb-20 relative">
       <div className="bg-gradient-to-br from-slate-800 to-slate-900 text-white p-6 rounded-b-3xl shadow-lg">
-        <h1 className="text-2xl font-bold mb-2">Today&apos;s Focus</h1>
-        <p className="text-slate-300 text-sm">Eisenhower Matrix</p>
+        <h1 className="text-2xl font-bold mb-2">{t('today.title')}</h1>
+        <p className="text-slate-300 text-sm">{t('today.subtitle')}</p>
       </div>
 
       <div className="p-4">
@@ -94,13 +96,13 @@ export default function Today({ tasks, onAddTask, onToggleComplete, onDeleteTask
                 className={`${info.color} ${info.borderColor} border-2 rounded-2xl p-4 min-h-[200px]`}
               >
                 <div className="mb-4">
-                  <h2 className={`text-lg font-bold ${info.textColor}`}>{info.title}</h2>
-                  <p className={`text-xs ${info.textColor} opacity-70`}>{info.subtitle}</p>
+                  <h2 className={`text-lg font-bold ${info.textColor}`}>{t(`quadrant.${quadrant}.title`)}</h2>
+                  <p className={`text-xs ${info.textColor} opacity-70`}>{t(`quadrant.${quadrant}.subtitle`)}</p>
                 </div>
 
                 <div className="space-y-2">
                   {quadrantTasks.length === 0 ? (
-                    <p className="text-gray-400 text-xs text-center py-4">No tasks</p>
+                    <p className="text-gray-400 text-xs text-center py-4">{t('today.noTasks')}</p>
                   ) : (
                     quadrantTasks.map((task) => (
                       <div

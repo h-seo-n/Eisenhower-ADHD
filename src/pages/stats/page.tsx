@@ -10,6 +10,7 @@ interface StatsProps {
 }
 
 export default function Stats({ tasks, archives }: StatsProps) {
+  const { t } = useTranslation();
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
 
   const stats = useMemo(() => {
@@ -50,26 +51,26 @@ export default function Stats({ tasks, archives }: StatsProps) {
   const statCards = [
     {
       icon: Target,
-      label: 'Tasks Completed',
+      label: t('stats.tasksCompleted'),
       value: stats.totalCompleted,
       color: 'from-teal-500 to-teal-600'
     },
     {
       icon: Award,
-      label: 'Critical Tasks (Q1)',
+      label: t('stats.criticalTasks'),
       value: stats.q1Completed,
       color: 'from-red-500 to-red-600'
     },
     {
       icon: Clock,
-      label: 'Estimated Time',
+      label: t('stats.estimatedTime'),
       value: `${stats.totalEstimatedHours}h ${stats.totalEstimatedMinutes}m`,
       color: 'from-blue-500 to-blue-600'
     },
     {
       icon: TrendingUp,
-      label: 'Time Accuracy',
-      value: `${stats.avgAccuracy}% ${stats.avgAccuracy > 100 ? "(over)" : stats.avgAccuracy > 0 && stats.avgAccuracy < 100 ? "(under)" : ""}`,
+      label: t('stats.timeAccuracy'),
+      value: `${stats.avgAccuracy}% ${stats.avgAccuracy > 100 ? t('stats.over') : stats.avgAccuracy > 0 && stats.avgAccuracy < 100 ? t('stats.under') : ""}`,
       color: 'from-purple-500 to-purple-600'
     }
   ];
@@ -77,8 +78,8 @@ export default function Stats({ tasks, archives }: StatsProps) {
   return (
     <div className="pb-20">
       <div className="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-6 rounded-b-3xl shadow-lg">
-        <h1 className="text-2xl font-bold mb-2">Statistics</h1>
-        <p className="text-indigo-50 text-sm">Track your productivity</p>
+        <h1 className="text-2xl font-bold mb-2">{t('stats.title')}</h1>
+        <p className="text-indigo-50 text-sm">{t('stats.subtitle')}</p>
       </div>
 
       <div className="p-4 space-y-4">
@@ -113,7 +114,7 @@ export default function Stats({ tasks, archives }: StatsProps) {
               <div className={`p-2 rounded-lg bg-gray-100 text-gray-500 transition-colors group-hover:bg-indigo-50 group-hover:text-indigo-600`}>
                 <Archive className="w-5 h-5" />
               </div>
-              <span className="font-semibold text-gray-700">Archived Tasks</span>
+              <span className="font-semibold text-gray-700">{t('stats.archivedTasks')}</span>
               <span className="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded-full">
                 {archives?.length}
               </span>
@@ -138,7 +139,7 @@ export default function Stats({ tasks, archives }: StatsProps) {
                 <div className="bg-white mx-1 mt-1 rounded-b-xl shadow-sm border-x border-b border-gray-100 p-2 space-y-1">
                   {archives?.length === 0 ? (
                     <div className="text-center py-6 text-gray-400 text-sm">
-                      No archived tasks yet
+                      {t('stats.noArchived')}
                     </div>
                   ) : (
                     archives?.map((task) => {
@@ -191,7 +192,7 @@ export default function Stats({ tasks, archives }: StatsProps) {
 
         {stats.totalCompleted === 0 && archives?.length === 0 && (
           <div className="text-center py-12 text-gray-400">
-            <p className="text-sm">Complete some tasks to see your stats!</p>
+            <p className="text-sm">{t('stats.noStats')}</p>
           </div>
         )}
       </div>

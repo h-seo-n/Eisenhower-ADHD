@@ -12,6 +12,7 @@ interface FocusTimerProps {
 }
 
 export default function FocusTimer({ isOpen, onClose, task, onComplete }: FocusTimerProps) {
+  const { t } = useTranslation();
   const [isRunning, setIsRunning] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [showFeedback, setShowFeedback] = useState(false);
@@ -58,17 +59,17 @@ export default function FocusTimer({ isOpen, onClose, task, onComplete }: FocusT
 
   if (showFeedback) {
     return (
-      <Modal isOpen={isOpen} onClose={onClose} title="Task Completed!" showCloseButton={false}>
+      <Modal isOpen={isOpen} onClose={onClose} title={t('timer.taskCompleted')} showCloseButton={false}>
         <div className="space-y-6">
           <div className="bg-gray-50 rounded-lg p-4 space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Estimated Time:</span>
+              <span className="text-sm text-gray-600">{t('timer.estimatedTime')}</span>
               <span className="font-semibold text-gray-900">
                 {task.hours}h {task.minutes}m
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Actual Time:</span>
+              <span className="text-sm text-gray-600">{t('timer.actualTime')}</span>
               <span className="font-semibold text-gray-900">
                 {Math.floor(seconds / 3600)}h {Math.floor((seconds % 3600) / 60)}m
               </span>
@@ -77,11 +78,11 @@ export default function FocusTimer({ isOpen, onClose, task, onComplete }: FocusT
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">
-              Adjust Actual Time (Optional)
+              {t('timer.adjustActualTime')}
             </label>
             <div className="flex gap-3">
               <div className="flex-1">
-                <label className="block text-xs text-gray-500 mb-1">Hours</label>
+                <label className="block text-xs text-gray-500 mb-1">{t('common.hours')}</label>
                 <input
                   type="number"
                   min="0"
@@ -97,7 +98,7 @@ export default function FocusTimer({ isOpen, onClose, task, onComplete }: FocusT
                 />
               </div>
               <div className="flex-1">
-                <label className="block text-xs text-gray-500 mb-1">Minutes</label>
+                <label className="block text-xs text-gray-500 mb-1">{t('common.minutes')}</label>
                 <input
                   type="number"
                   min="0"
@@ -118,7 +119,7 @@ export default function FocusTimer({ isOpen, onClose, task, onComplete }: FocusT
             onClick={handleSubmitFeedback}
             className="w-full bg-teal-500 text-white py-3 rounded-lg font-medium hover:bg-teal-600 transition-colors whitespace-nowrap"
           >
-            Submit
+            {t('timer.submit')}
           </button>
         </div>
       </Modal>
@@ -146,7 +147,7 @@ export default function FocusTimer({ isOpen, onClose, task, onComplete }: FocusT
             </div>
 
             <div>
-              <h2 className="text-white text-xl font-medium mb-2">Focus Time</h2>
+              <h2 className="text-white text-xl font-medium mb-2">{t('timer.focusTime')}</h2>
               <p className="text-white/70 text-sm line-clamp-2">{task.text}</p>
             </div>
 
@@ -155,7 +156,7 @@ export default function FocusTimer({ isOpen, onClose, task, onComplete }: FocusT
             </div>
 
             <div className="text-white/50 text-sm">
-              Estimated: {task.hours}h {task.minutes}m
+              {t('timer.estimated', { hours: task.hours, minutes: task.minutes })}
             </div>
 
             <div className="flex gap-4 justify-center">
@@ -171,7 +172,7 @@ export default function FocusTimer({ isOpen, onClose, task, onComplete }: FocusT
                   onClick={handleStop}
                   className="px-6 h-16 flex items-center justify-center bg-teal-500 text-white rounded-full hover:bg-teal-600 transition-colors shadow-lg font-medium whitespace-nowrap"
                 >
-                  Complete Task
+                  {t('timer.completeTask')}
                 </button>
               )}
             </div>

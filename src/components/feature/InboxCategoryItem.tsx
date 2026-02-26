@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, Plus, Trash2, X } from 'lucide-react';
 import type { CategoryTask, Task } from '../../types/task';
+import { useTranslation } from 'react-i18next';
 
 interface InboxCategoryProps {
   category: CategoryTask;
@@ -11,13 +12,14 @@ interface InboxCategoryProps {
   onSelectTask: (task: Task) => void;
 }
 
-export default function InboxCategoryItem({ 
+export default function InboxCategoryItem({
   category,
-  subtasks, 
-  onAddSubtask, 
-  onDeleteTask, 
-  onSelectTask 
+  subtasks,
+  onAddSubtask,
+  onDeleteTask,
+  onSelectTask
 }: InboxCategoryProps) {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [inputVal, setInputVal] = useState('');
 
@@ -72,7 +74,7 @@ export default function InboxCategoryItem({
                         handleAdd();
                       }
                     }}
-                    placeholder="Add task to this category..."
+                    placeholder={t('inbox.categoryPlaceholder')}
                     className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white"
                   />
                   {inputVal && (
