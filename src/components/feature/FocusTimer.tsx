@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Play, Pause, X, Clock } from 'lucide-react';
 import type { Task } from '../../types/task';
 import Modal from '../base/Modal';
+import { useTranslation } from 'react-i18next';
 
 interface FocusTimerProps {
   isOpen: boolean;
@@ -18,13 +19,18 @@ export default function FocusTimer({ isOpen, onClose, task, onComplete }: FocusT
   const [showFeedback, setShowFeedback] = useState(false);
   const [actualHours, setActualHours] = useState(0);
   const [actualMinutes, setActualMinutes] = useState(0);
+  const [startTime, setStartTime] = useState(new Date().getTime());
 
   useEffect(() => {
     let interval: number | undefined;
-    
+
     if (isRunning) {
       interval = window.setInterval(() => {
-        setSeconds((s) => s + 1);
+        // run on background: 
+        // calculate current time - saved timestamp every interval
+        const now = new Date().getTime();
+        setSeconds((now - startTime) / 1000);
+        console.log(seconds);
       }, 1000);
     }
     
@@ -36,9 +42,14 @@ export default function FocusTimer({ isOpen, onClose, task, onComplete }: FocusT
   const formatTime = (totalSeconds: number) => {
     const hrs = Math.floor(totalSeconds / 3600);
     const mins = Math.floor((totalSeconds % 3600) / 60);
-    const secs = totalSeconds % 60;
+    const secs = Math.floor(totalSeconds % 60);
     return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
+
+  const handleStart = () => {
+    setIsRunning(true);
+    setStartTime(new Date().getTime());
+  }
 
   const handleStop = () => {
     setIsRunning(false);
@@ -161,7 +172,7 @@ export default function FocusTimer({ isOpen, onClose, task, onComplete }: FocusT
 
             <div className="flex gap-4 justify-center">
               <button
-                onClick={() => setIsRunning(!isRunning)}
+                onClick={handleStart}
                 className="w-16 h-16 flex items-center justify-center bg-white text-slate-900 rounded-full hover:bg-white/90 transition-colors shadow-lg"
               >
                 {isRunning ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 ml-1" />}
