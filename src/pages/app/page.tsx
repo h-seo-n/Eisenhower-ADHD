@@ -21,7 +21,7 @@ export default function App() {
       text: task,
       importance: 2,
       hours: 0,
-      minutes: 30,
+      minutes: 15,
       deadline: 'Today',
       completed: false,
       createdAt: Date.now()
@@ -38,7 +38,7 @@ export default function App() {
       superCategory: category, 
       importance: category.importance,
       hours: 0, 
-      minutes: 30,
+      minutes: 15,
       deadline: category.deadline, 
       completed: false,
       createdAt: Date.now()

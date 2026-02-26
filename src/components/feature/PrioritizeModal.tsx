@@ -21,7 +21,7 @@ export default function PrioritizeModal({ isOpen, onClose, task, onAddTask, onDe
   const [content, setContent] = useState<string>(task?.text || "");
   const [importance, setImportance] = useState<number>(task?.importance || 2);
   const [hours, setHours] = useState<number>(isTask(task) ? task.hours : 0);
-  const [minutes, setMinutes] = useState<number>(isTask(task) ? task.minutes : 30);
+  const [minutes, setMinutes] = useState<number>(isTask(task) ? task.minutes : 15);
   const [deadline, setDeadline] = useState<DeadlineType>(task?.deadline || 'Today');
   const [specificDate, setSpecificDate] = useState<string>(task?.specificDate || '');
   
@@ -42,7 +42,7 @@ export default function PrioritizeModal({ isOpen, onClose, task, onAddTask, onDe
     setContent(task?.text || "");
     setImportance(task?.importance || 2);
     setHours(isTask(task) ? task.hours : 0);
-    setMinutes(isTask(task) ? task.minutes : 30);
+    setMinutes(isTask(task) ? task.minutes : 15);
     setDeadline(task?.deadline || 'Today');
     setSpecificDate(task?.specificDate || '');
   }, [task]);
@@ -55,7 +55,7 @@ export default function PrioritizeModal({ isOpen, onClose, task, onAddTask, onDe
       text: subtaskInput,
       importance,
       hours: 0,
-      minutes: 30,
+      minutes: 15,
       deadline: deadline || 'Today',
       completed: false,
       createdAt: Date.now(),

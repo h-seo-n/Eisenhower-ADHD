@@ -35,7 +35,7 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
               text: "",
               importance: 2,
               hours: 0,
-              minutes: 30,
+              minutes: 15,
               deadline: 'Today',
               completed: false,
               createdAt: Date.now()
@@ -170,7 +170,7 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
                 text: "",
                 importance: 2,
                 hours: 0,
-                minutes: 30,
+                minutes: 15,
                 deadline: 'Today',
                 completed: false,
                 createdAt: Date.now()

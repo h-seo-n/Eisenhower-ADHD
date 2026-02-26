@@ -174,7 +174,7 @@ export default function Today({ tasks, onAddTask, onToggleComplete, onDeleteTask
                 text: "",
                 importance: 2,
                 hours: 0,
-                minutes: 30,
+                minutes: 15,
                 deadline: 'Today',
                 completed: false,
                 createdAt: Date.now()
