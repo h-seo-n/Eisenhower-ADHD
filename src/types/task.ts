@@ -9,7 +9,7 @@ export interface Task {
   hours: number;
   minutes: number;
   deadline: DeadlineType;
-  specificDate?: string;
+  specificDate?: Date;
   quadrant?: Quadrant;
   completed: boolean;
   createdAt: number;

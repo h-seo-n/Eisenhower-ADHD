@@ -31,22 +31,6 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
     }
   };
 
-  const handleAddByClick = () => {
-          const task: Task = {
-              id: crypto.randomUUID(),
-              text: "",
-              importance: 2,
-              hours: 0,
-              minutes: 15,
-              deadline: 'Today',
-              completed: false,
-              createdAt: Date.now()
-      };
-      setSelectedTask(task);
-      setInputValue('');
-
-  }
-
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -187,7 +171,6 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
       <PrioritizeModal
         viewPage='Inbox'
         isOpen={!!selectedTask}
-        onAddTask={onAddTask}
         onDeleteTask={onDeleteTask}
         onClose={() => setSelectedTask(null)}
         task={selectedTask}

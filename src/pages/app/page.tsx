@@ -163,7 +163,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-[480px] mx-auto bg-white min-h-screen shadow-xl relative">
+      <div className="max-w-[768px] mx-auto bg-white min-h-screen shadow-xl relative">
         <header className="bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between sticky top-0 z-30">
           <h1 className="text-lg font-bold text-gray-900">{t('app.title')}</h1>
           <div className="text-right">
@@ -187,7 +187,6 @@ export default function App() {
           {activeTab === 'today' && (
             <Today
               tasks={tasks}
-              onAddTask={handleAddTask}
               onToggleComplete={handleToggleComplete}
               onDeleteTask={handleDeleteTask}
               onDeleteCategory={handleDeleteCategoryTask}

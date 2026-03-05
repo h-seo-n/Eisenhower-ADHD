@@ -3,15 +3,15 @@ export default {
   'app.title': '나의 일일 집중',
 
   // Navigation
-  'nav.inbox': '인박스',
+  'nav.inbox': '보관함',
   'nav.today': '오늘',
   'nav.stats': '통계',
 
   // Inbox Page
-  'inbox.title': '인박스',
-  'inbox.subtitle': '생각을 모두 담아두는 공간',
+  'inbox.title': '보관함',
+  'inbox.subtitle': '생각나는 모든 것을 작성해보세요',
   'inbox.placeholder': '새로운 생각을 추가하세요...',
-  'inbox.empty': '아직 생각이 없네요. 추가해보세요!',
+  'inbox.empty': '일단 가볍게 시작해볼까요?',
   'inbox.categoryPlaceholder': '이 카테고리에 작업 추가...',
 
   // Today Page

@@ -3,7 +3,7 @@ import type { Quadrant, DeadlineType, Task } from '../types/task';
 export function calculateQuadrant(
   importance: number,
   deadline: DeadlineType,
-  specificDate?: string
+  specificDate?: Date | string
 ): Quadrant {
   const isUrgent = calculateUrgency(deadline, specificDate);
   const isImportant = importance >= 3;
@@ -26,12 +26,12 @@ export function calculateTaskQuadrant(task: Task): Quadrant {
   return calculateQuadrant(task.importance, task.deadline, task.specificDate);
 }
 
-function calculateUrgency(deadline: DeadlineType, specificDate?: string): boolean {
+function calculateUrgency(deadline: DeadlineType, specificDate?: Date | string): boolean {
   if (deadline === 'Today') return true;
   if (deadline === 'Tomorrow') return true;
-  
+
   if (deadline === 'Specific Date' && specificDate) {
-    const targetDate = new Date(specificDate);
+    const targetDate = specificDate instanceof Date ? specificDate : new Date(specificDate);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     targetDate.setHours(0, 0, 0, 0);
