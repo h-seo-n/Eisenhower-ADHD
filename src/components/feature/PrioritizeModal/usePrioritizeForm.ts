@@ -31,6 +31,7 @@ export function usePrioritizeForm({ task, onSaveTask, onSaveCategory, onClose }:
     setMinutes(isTask(task) ? task.minutes : 15);
     setDeadline(task?.deadline ?? 'Today');
     setSpecificDate(toDate(task?.specificDate));
+    console.log(`in useEffect: ${specificDate}`)
     setIsCategoryTask(!isTask(task) && task !== null);
     setSubTasksDraft(task && !isTask(task) ? task.subTasks.map(st => ({ ...st })) : []);
   }, [task]);
@@ -60,6 +61,7 @@ export function usePrioritizeForm({ task, onSaveTask, onSaveCategory, onClose }:
     setSubtaskInput('');
 
     const resolvedSpecificDate = deadline === 'Specific Date' ? specificDate : undefined;
+    console.log(`in handleSave: ${resolvedSpecificDate}`);
 
     if (isCategoryTask) {
       const existingCategory = !isTask(task) ? task : null;

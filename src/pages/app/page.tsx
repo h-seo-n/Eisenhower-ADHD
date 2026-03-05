@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Inbox as InboxIcon, Target, BarChart3 } from 'lucide-react';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import type { CategoryTask, Task } from '../../types/task';
@@ -6,15 +6,26 @@ import Inbox from '../inbox/page';
 import Today from '../today/page';
 import Stats from '../stats/page';
 import { useTranslation } from 'react-i18next';
+import { toDate } from '@/utils/dateUtils';
 
 type TabType = 'inbox' | 'today' | 'stats';
 
 export default function App() {
   const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = useState<TabType>('today');
-  const [tasks, setTasks] = useLocalStorage<Task[]>('daily-focus-tasks', []);
+  const [tasks, setTasks] = useLocalStorage<Task[]>('daily-focus-tasks', [],
+    (tasks) => tasks.map(t => ({
+      ...t,
+      specificDate: t.specificDate ? toDate(t.specificDate) : undefined,
+    }))
+  );
   const [archivedTasks, setArchivedTasks] = useLocalStorage<Task[]>('archived-tasks', []);
   const [categoryTasks, setCategoryTasks] = useLocalStorage<CategoryTask[]>('super-category-tasks', []);
+
+  useEffect(()=>{
+    console.log(tasks);
+  }
+  , [tasks])
 
   const handleAddTask = (task: string | Task) => {
     if (typeof(task) === 'string'){
@@ -83,6 +94,7 @@ export default function App() {
       // new task : add automatically
       setTasks([...tasks, inputTask]);
     }
+    console.log('saving specificDate:', inputTask.specificDate);
   };
 
   const handlePrioritizeCategory = (inputCategory: CategoryTask, subTasks: Task[], originalTaskId?: string) => {  

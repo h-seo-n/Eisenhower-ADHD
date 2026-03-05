@@ -9,7 +9,7 @@ function IconButton({ onClick, className, icon }: IconButtonProps) {
     <button
       type="button"
       onClick={onClick}
-      className={`w-8 h-8 md:w-4 md:h-4 flex items-center justify-center rounded-lg transition-colors ${className}`}
+      className={`w-6 h-6 flex items-center justify-center rounded-lg transition-colors ${className}`}
     >
       {icon}
     </button>

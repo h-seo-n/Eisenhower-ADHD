@@ -16,7 +16,7 @@ function TaskActions({ task, quadrant, onStartTimer, onStore, onDelete }: TaskAc
   const showArchive = task.completed;
 
   return (
-    <div className="flex items-center gap-2 flex-shrink-0">
+    <div className="flex items-start gap-2 flex-shrink-0">
       {showTimer && (
         <IconButton
           onClick={() => onStartTimer(task)}

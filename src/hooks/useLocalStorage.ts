@@ -4,12 +4,14 @@ import { useState } from 'react';
  *  custom hook to leverage local storage :
  *  useState in localStorage version
  */
-export function useLocalStorage<T>(key: string, initialValue: T) {
+export function useLocalStorage<T>(key: string, initialValue: T, reviver?: (raw: T) => T) {
   const [storedValue, setStoredValue] = useState<T>(() => {
     // upon call, check if previous stored value exists for key
     try {
       const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      if (!item) return initialValue;
+      const parsed = JSON.parse(item);
+      return reviver ? reviver(parsed) : parsed;
     } catch (error) {
       console.error(error);
       return initialValue;

@@ -1,7 +1,8 @@
 import { Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import type { DeadlineType } from '../../../../types/task';
-import { toDatetimeLocalString } from '../../../../utils/dateUtils';
+import type { DeadlineType } from '@/types/task';
+import { toDatetimeLocalString, parseDatetimeLocal } from '@/utils/dateUtils';
+import { useDeadlineLabels } from '@/hooks/useDeadlineLabels';
 
 const DEADLINE_OPTIONS: DeadlineType[] = ['Today', 'Tomorrow', 'Specific Date', 'No Deadline'];
 
@@ -24,13 +25,8 @@ export default function DeadlineField({
 }: DeadlineFieldProps) {
   const { t } = useTranslation();
 
-  const deadlineLabels: Record<DeadlineType, string> = {
-    Today: t('deadline.today'),
-    Tomorrow: t('deadline.tomorrow'),
-    'Specific Date': t('deadline.specificDate'),
-    'No Deadline': t('deadline.noDeadline'),
-  };
-
+  const deadlineLabels = useDeadlineLabels();
+  
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
@@ -57,7 +53,7 @@ export default function DeadlineField({
         <input
           type="datetime-local"
           value={toDatetimeLocalString(specificDate)}
-          onChange={(e) => onSpecificDateChange(e.target.value ? new Date(e.target.value) : null)}
+          onChange={(e) => onSpecificDateChange(parseDatetimeLocal(e.target.value))}
           className="mt-3 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
         />
       )}

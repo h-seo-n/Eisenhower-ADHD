@@ -31,7 +31,7 @@ function calculateUrgency(deadline: DeadlineType, specificDate?: Date | string):
   if (deadline === 'Tomorrow') return true;
 
   if (deadline === 'Specific Date' && specificDate) {
-    const targetDate = specificDate instanceof Date ? specificDate : new Date(specificDate);
+    const targetDate = new Date(specificDate instanceof Date ? specificDate.getTime() : specificDate);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     targetDate.setHours(0, 0, 0, 0);
