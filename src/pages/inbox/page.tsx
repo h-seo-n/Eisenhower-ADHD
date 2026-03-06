@@ -65,7 +65,7 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
 
   return (
     <div className="pb-20">
-      <div className="bg-gradient-to-br from-teal-500 to-teal-600 text-white p-6 rounded-b-3xl shadow-lg">
+      <div className="bg-[#06D6A0] text-white p-6 rounded-b-3xl">
         <h1 className="text-2xl font-bold mb-2">{t('inbox.title')}</h1>
         <p className="text-teal-50 text-sm">{t('inbox.subtitle')}</p>
       </div>
@@ -163,7 +163,7 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
               };
               setSelectedTask(newTask);
             }}
-            className='bg-teal-500'
+            className='bg-[#06D6A0]'
           />
         </div>
       </div>

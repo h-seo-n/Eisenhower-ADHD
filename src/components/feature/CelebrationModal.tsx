@@ -40,7 +40,7 @@ export default function CelebrationModal({ isOpen, onClose }: CelebrationModalPr
             rotate: [0, -10, 10, -10, 10, 0],
             scale: [1, 1.1, 1]
           }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.7 }}
           className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center"
         >
           <Trophy className="w-10 h-10 text-white" />

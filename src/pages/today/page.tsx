@@ -87,14 +87,14 @@ export default function Today({
   return (
     <div className="pb-20 relative">
       {/* Header */}
-      <div className="bg-gradient-to-br from-slate-800 to-slate-900 text-white p-6 rounded-b-3xl shadow-lg">
+      <div className="bg-[#073B4C] text-white p-6 rounded-b-3xl">
         <h1 className="text-2xl font-bold mb-2">{t('today.title')}</h1>
         <p className="text-slate-300 text-sm">{t('today.subtitle')}</p>
       </div>
 
       {/* Quadrant Grid */}
-      <div className="p-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="p-4 h-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
           {QUADRANTS.map((quadrant) => (
             <QuadrantSection
               key={quadrant}

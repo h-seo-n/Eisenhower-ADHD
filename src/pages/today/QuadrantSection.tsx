@@ -22,7 +22,7 @@ function QuadrantSection({ quadrant, tasks, onToggle, onSelect, onStartTimer, on
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`${info.color} ${info.borderColor} border-2 rounded-2xl p-4 min-h-[200px]`}
+      className={`${info.color} rounded-lg p-4 min-h-[200px] h-full`}
     >
       <div className="mb-4">
         <h2 className={`text-lg font-bold ${info.textColor}`}>
