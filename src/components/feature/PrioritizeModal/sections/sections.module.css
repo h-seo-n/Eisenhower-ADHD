@@ -33,16 +33,17 @@
 .titleField {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.5rem;
 }
 
 .titleCategory {
   display: flex;
+  flex: 1;
   align-items: center;
   gap: 1rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
-  font-weight: 500;
+  font-weight: 600;
   color: #111827;
   margin-bottom: -10px;
 }
@@ -51,6 +52,28 @@
   display: flex;
   gap: 0.75rem;
   align-items: center;
+}
+
+.titleCategoryEdit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+
+  padding: 0.25rem;
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+}
+
+.titleCategoryEdit:hover {
+  color: #0d9488;
+  background-color: #f3f4f6;
 }
 
 .titleEditIcon {
@@ -101,12 +124,39 @@
   accent-color: #14b8a6;
 }
 
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  background-color: #14b8a6;
+  border: none;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  background-color: #14b8a6;
+  border: none;
+  cursor: pointer;
+}
+
 .sliderLabels {
-  display: flex;
-  justify-content: space-between;
+  position: relative;
+  height: 1rem;
   font-size: 0.75rem;
   line-height: 1rem;
   color: #6b7280;
+  margin: 0 0.5rem;
+}
+
+.sliderLabels > span {
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
 }
 
 .sliderLabelActive {

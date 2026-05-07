@@ -6,17 +6,28 @@ interface TaskTitleFieldProps {
   value: string;
   onChange: (value: string) => void;
   categoryLabel?: string;
+  onEditCategory?: () => void;
 }
 
-export default function TaskTitleField({ value, onChange, categoryLabel }: TaskTitleFieldProps) {
+export default function TaskTitleField({ value, onChange, categoryLabel, onEditCategory }: TaskTitleFieldProps) {
   const { t } = useTranslation();
   return (
     <div className={styles.titleField}>
       {categoryLabel && (
-        <label className={styles.titleCategory}>
+        <div className={styles.titleCategory}>
           <PinIcon className={styles.iconSm} />
-          {categoryLabel}
-        </label>
+          <span>{categoryLabel}</span>
+          {onEditCategory && (
+            <button
+              type="button"
+              onClick={onEditCategory}
+              className={styles.titleCategoryEdit}
+              aria-label={t('prioritize.editCategory') || 'Edit category'}
+            >
+              <PencilIcon className={styles.iconSm} />
+            </button>
+          )}
+        </div>
       )}
       <div className={styles.titleRow}>
         <label className={styles.titleEditIcon}>

@@ -51,9 +51,14 @@ export default function Today({
   onPrioritizeCategory,
 }: TodayProps) {
   const { t } = useTranslation();
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [selectedTask, setSelectedTask] = useState<Task | CategoryTask | null>(null);
   const [timerTask, setTimerTask] = useState<Task | null>(null);
   const { showCelebration, triggerCelebration, dismissCelebration } = useCelebration();
+
+  const handleEditCategory = (category: CategoryTask) => {
+    const currentSubTasks = tasks.filter(t => t.superCategory?.id === category.id);
+    setSelectedTask({ ...category, subTasks: currentSubTasks });
+  };
 
   const handleToggle = useCallback(
     (task: Task) => {
@@ -132,6 +137,7 @@ export default function Today({
           task={selectedTask}
           onSaveTask={onPrioritizeTask}
           onSaveCategory={onPrioritizeCategory}
+          onEditCategory={handleEditCategory}
         />
       )}
 

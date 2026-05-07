@@ -39,6 +39,9 @@ export default function Modal({ isOpen, onClose, title, children, showCloseButto
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className={styles.wrapper}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) onClose();
+            }}
           >
             <div className={styles.dialog}>
               {title && (

@@ -30,7 +30,11 @@ export default function ImportanceSlider({ value, onChange, disabled, labelKey =
         />
         <div className={styles.sliderLabels}>
           {labels.map((label, index) => (
-            <span key={label} className={value === index + 1 ? styles.sliderLabelActive : ''}>
+            <span
+              key={label}
+              style={{ left: `${(index / (labels.length - 1)) * 100}%` }}
+              className={value === index + 1 ? styles.sliderLabelActive : ''}
+            >
               {label}
             </span>
           ))}

@@ -22,7 +22,12 @@ interface InboxProps {
 export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDeleteTask, onDeleteCategory, onPrioritizeTask, onPrioritizeCategory }: InboxProps) {
   const { t } = useTranslation();
   const [inputValue, setInputValue] = useState('');
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [selectedTask, setSelectedTask] = useState<Task | CategoryTask | null>(null);
+
+  const handleEditCategory = (category: CategoryTask) => {
+    const currentSubTasks = tasks.filter(t => t.superCategory?.id === category.id);
+    setSelectedTask({ ...category, subTasks: currentSubTasks });
+  };
 
   const handleAddByEnter = () => {
     if (inputValue.trim()) {
@@ -168,6 +173,7 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
         task={selectedTask}
         onSaveTask={onPrioritizeTask}
         onSaveCategory={onPrioritizeCategory}
+        onEditCategory={handleEditCategory}
       />
 
     </div>
