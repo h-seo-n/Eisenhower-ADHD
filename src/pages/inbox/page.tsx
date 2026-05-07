@@ -53,14 +53,14 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
 
   const inboxCategories: InboxCategory[] = categories.reduce<InboxCategory[]>((acc, category) => {
     const categroySubtasks = tasks.filter(t => t.superCategory?.id === category.id);
-    const unassignedSubtasks = categroySubtasks.filter(t => !t.quadrant);
+    // const unassignedSubtasks = categroySubtasks.filter(t => !t.quadrant);
 
-    if (unassignedSubtasks.length > 0) {
-      acc.push({
-        category: category,
-        subtasks: unassignedSubtasks
-      });
-    }
+    // if (unassignedSubtasks.length > 0) {
+    //   acc.push({
+    //     category: category,
+    //     subtasks: unassignedSubtasks
+    //   });
+    // }
     return acc;
   }, []);
 
@@ -162,7 +162,6 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
       </div>
 
       <PrioritizeModal
-        viewPage='Inbox'
         isOpen={!!selectedTask}
         onDeleteTask={onDeleteTask}
         onClose={() => setSelectedTask(null)}

@@ -18,10 +18,10 @@ interface PrioritizeModalProps {
   onDeleteTask: (id: string) => void;
   onSaveTask: (task: Task) => void;
   onSaveCategory: (category: CategoryTask, subTasks: Task[], originalTaskId: string) => void;
-  viewPage: 'Inbox' | 'Today';
+  // viewPage: 'Inbox' | 'Today';
 }
 
-export default function PrioritizeModal({ isOpen, onClose, task, onSaveTask, onSaveCategory, viewPage }: PrioritizeModalProps) {
+export default function PrioritizeModal({ isOpen, onClose, task, onSaveTask, onSaveCategory, /*viewPage*/ }: PrioritizeModalProps) {
   const { t } = useTranslation();
   const isSubtask = Boolean(isTask(task) && task.superCategory);
 
@@ -36,7 +36,7 @@ export default function PrioritizeModal({ isOpen, onClose, task, onSaveTask, onS
           categoryLabel={isSubtask ? (task as Task).superCategory?.text : undefined}
         />
 
-        {viewPage === 'Inbox' && isTask(task) && !task.superCategory && (
+        {isTask(task) && !task.superCategory && (
           <CategoryToggle
             checked={form.isCategoryTask}
             onChange={form.setIsCategoryTask}
@@ -75,6 +75,7 @@ export default function PrioritizeModal({ isOpen, onClose, task, onSaveTask, onS
             subTasks={form.subTasksDraft}
             onAdd={form.handleAddSubtask}
             onRemove={form.handleRemoveSubtask}
+            onUpdateDuration={form.handleUpdateSubtaskDuration}
           />
         )}
 

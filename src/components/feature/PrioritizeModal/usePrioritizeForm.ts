@@ -56,6 +56,12 @@ export function usePrioritizeForm({ task, onSaveTask, onSaveCategory, onClose }:
     setSubTasksDraft(prev => prev.filter(t => t.id !== taskId));
   };
 
+  const handleUpdateSubtaskDuration = (taskId: string, nextHours: number, nextMinutes: number) => {
+    setSubTasksDraft(prev =>
+      prev.map(t => (t.id === taskId ? { ...t, hours: nextHours, minutes: nextMinutes } : t))
+    );
+  };
+
   const handleSave = () => {
     if (!task) return;
     setSubtaskInput('');
@@ -76,7 +82,11 @@ export function usePrioritizeForm({ task, onSaveTask, onSaveCategory, onClose }:
         createdAt: existingCategory?.createdAt ?? Date.now(),
       };
 
-      const subTaskList = subTasksDraft.map(s => ({ ...s, superCategory: shallowCategory }));
+      const subTaskList = subTasksDraft.map(s => { 
+        const withCategory = { ...s, superCategory: shallowCategory };
+        return { ...withCategory, quadrant: calculateTaskQuadrant(withCategory) };
+      });
+      
       const updatedCategory: CategoryTask = { ...shallowCategory, subTasks: subTaskList };
       const originalTaskId = isTask(task) ? task.id : undefined;
       onSaveCategory(updatedCategory, subTaskList, originalTaskId);
@@ -112,6 +122,7 @@ export function usePrioritizeForm({ task, onSaveTask, onSaveCategory, onClose }:
     subTasksDraft,
     handleAddSubtask,
     handleRemoveSubtask,
+    handleUpdateSubtaskDuration,
     handleSave,
   };
 }

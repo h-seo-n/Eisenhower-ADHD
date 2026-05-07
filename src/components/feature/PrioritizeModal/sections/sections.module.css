@@ -282,6 +282,61 @@
   white-space: nowrap;
 }
 
+.subtaskItemRight {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+}
+
+.subtaskDuration {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.subtaskDurationIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+  color: #6b7280;
+  margin-right: 0.125rem;
+}
+
+.subtaskDurationInput {
+  width: fit-content;
+  padding: 0.25rem 0.375rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  outline: none;
+  background-color: #ffffff;
+  text-align: left;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.subtaskDurationInput::-webkit-outer-spin-button,
+.subtaskDurationInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.subtaskDurationInput:focus {
+  box-shadow: 0 0 0 2px #14b8a6;
+  border-color: transparent;
+}
+
+.subtaskDurationUnit {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #6b7280;
+}
+
+.subtaskDurationUnit:first-of-type {
+  margin-right: 0.4rem;
+}
+
 .subtaskRemove {
   display: flex;
   align-items: center;

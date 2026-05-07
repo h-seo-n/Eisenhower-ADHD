@@ -1,4 +1,4 @@
-import { ListPlus, Plus, Trash2, X } from 'lucide-react';
+import { Clock, ListPlus, Plus, Trash2, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { Task } from '../../../../types/task';
 import styles from './sections.module.css';
@@ -9,7 +9,13 @@ interface SubtaskEditorProps {
   subTasks: Task[];
   onAdd: () => void;
   onRemove: (id: string) => void;
+  onUpdateDuration: (id: string, hours: number, minutes: number) => void;
 }
+
+const parseClampedInt = (raw: string, min: number, max: number): number => {
+  const val = parseInt(raw, 10);
+  return Math.min(max, Math.max(min, isNaN(val) ? min : val));
+};
 
 export default function SubtaskEditor({
   subtaskInput,
@@ -17,6 +23,7 @@ export default function SubtaskEditor({
   subTasks,
   onAdd,
   onRemove,
+  onUpdateDuration,
 }: SubtaskEditorProps) {
   const { t } = useTranslation();
 
@@ -60,13 +67,42 @@ export default function SubtaskEditor({
                 <div className={styles.subtaskBullet} />
                 <span className={styles.subtaskItemText}>{sub.text}</span>
               </div>
-              <button
-                onClick={() => onRemove(sub.id)}
-                className={styles.subtaskRemove}
-                aria-label="Remove subtask"
-              >
-                <Trash2 className={styles.subtaskRemoveIcon} />
-              </button>
+              <div className={styles.subtaskItemRight}>
+                <div className={styles.subtaskDuration}>
+                  <Clock className={styles.subtaskDurationIcon} />
+                  <input
+                    type="number"
+                    min="0"
+                    max="12"
+                    value={sub.hours.toString()}
+                    onChange={(e) =>
+                      onUpdateDuration(sub.id, parseClampedInt(e.target.value, 0, 12), sub.minutes)
+                    }
+                    className={styles.subtaskDurationInput}
+                    aria-label={t('common.hours')}
+                  />
+                  <span className={styles.subtaskDurationUnit}>h</span>
+                  <input
+                    type="number"
+                    min="0"
+                    max="59"
+                    value={sub.minutes.toString()}
+                    onChange={(e) =>
+                      onUpdateDuration(sub.id, sub.hours, parseClampedInt(e.target.value, 0, 59))
+                    }
+                    className={styles.subtaskDurationInput}
+                    aria-label={t('common.minutes')}
+                  />
+                  <span className={styles.subtaskDurationUnit}>m</span>
+                </div>
+                <button
+                  onClick={() => onRemove(sub.id)}
+                  className={styles.subtaskRemove}
+                  aria-label="Remove subtask"
+                >
+                  <Trash2 className={styles.subtaskRemoveIcon} />
+                </button>
+              </div>
             </li>
           ))}
         </ul>

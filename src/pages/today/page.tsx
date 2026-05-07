@@ -126,7 +126,6 @@ export default function Today({
 
       {selectedTask && (
         <PrioritizeModal
-          viewPage="Today"
           onDeleteTask={onDeleteTask}
           isOpen={!!selectedTask}
           onClose={() => setSelectedTask(null)}
