@@ -1,5 +1,6 @@
 import { Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import styles from './FloatingButton.module.css';
 
 interface FloatingButtonProps {
     onClick: () => void;
@@ -11,11 +12,11 @@ export default function FloatingButton({ onClick, className }: FloatingButtonPro
     return (
         <button
             onClick={onClick}
-            className={`p-4 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 ${className}`}
+            className={`${styles.button} ${className ?? ''}`}
             aria-label={t('common.addNewTask')}
             type='button'
         >
-            <Plus className='w-6 h-6' />
+            <Plus className={styles.icon} />
         </button>
     )
 }

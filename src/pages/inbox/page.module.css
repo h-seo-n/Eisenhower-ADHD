@@ -1,0 +1,187 @@
+.container {
+  padding-bottom: 5rem;
+}
+
+.header {
+  background-color: #06d6a0;
+  color: #ffffff;
+  padding: 1.5rem;
+  border-bottom-left-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #f0fdfa;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inputRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.inputWrapper {
+  flex: 1 1 0%;
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  outline: none;
+  background-color: #ffffff;
+}
+
+.input:focus {
+  box-shadow: 0 0 0 2px #14b8a6;
+  border-color: transparent;
+}
+
+.clearButton {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  background-color: transparent;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+}
+
+.clearButton:hover {
+  color: #4b5563;
+  background-color: #f3f4f6;
+}
+
+.clearIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.empty {
+  text-align: center;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  color: #9ca3af;
+}
+
+.emptyText {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.taskCard {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: box-shadow 150ms ease;
+}
+
+.taskCard:hover {
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.taskRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.taskTextWrapper {
+  flex: 1 1 0%;
+}
+
+.taskText {
+  color: #111827;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.deleteButton {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  background-color: transparent;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+}
+
+.deleteButton:hover {
+  color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.deleteIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.fabWrapper {
+  position: fixed;
+  bottom: calc(5rem + 1.5rem);
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 768px;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.fabInner {
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: auto;
+}
+
+.fabButton {
+  background-color: #06d6a0 !important;
+}

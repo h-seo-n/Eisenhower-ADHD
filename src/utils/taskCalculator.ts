@@ -50,33 +50,28 @@ export function getQuadrantInfo(quadrant: Quadrant) {
     Q1: {
       title: 'Do Now',
       subtitle: 'Urgent & Important',
-      color: 'bg-[#FDE3E9]',
-      textColor: 'text-[#B33453]',
-      iconColor: 'text-[#B33453]'
+      bg: '#FDE3E9',
+      text: '#B33453',
     },
     Q2: {
       title: 'Plan',
       subtitle: 'Important, Not Urgent',
-      color: 'bg-[#FFF6E0]',
-      textColor: 'text-[#B49243]',
-      iconColor: 'text-[#B49243]'
+      bg: '#FFF6E0',
+      text: '#B49243',
     },
     Q3: {
       title: 'Delegate',
       subtitle: 'Urgent, Not Important',
-      color: 'bg-[#CFE8F0]',
-      textColor: 'text-[#118AB2]',
-      iconColor: 'text-[#118AB2]'
+      bg: '#CFE8F0',
+      text: '#118AB2',
     },
     Q4: {
       title: 'Eliminate',
       subtitle: 'Neither Urgent nor Important',
-      color: 'bg-[#CDD8DB]',
-      borderColor: 'border-gray-200',
-      textColor: 'text-[#073B4C]',
-      iconColor: 'text-[#073B4C]'
-    }
+      bg: '#CDD8DB',
+      text: '#073B4C',
+    },
   };
-  
+
   return info[quadrant];
 }

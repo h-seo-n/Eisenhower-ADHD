@@ -1,0 +1,83 @@
+.card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #f3f4f6;
+}
+
+.checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.25rem;
+  border: 1px solid #d1d5db;
+  accent-color: #578fe9;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex: 1 1 0%;
+  min-width: 0;
+  row-gap: 0.5rem;
+  column-gap: 0.75rem;
+}
+
+.categoryLabel {
+  max-width: 100%;
+  font-size: 12px;
+  color: #6b7280;
+  word-break: break-word;
+}
+
+.taskText {
+  max-width: 100%;
+  word-break: break-word;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #111827;
+}
+
+.struck {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex: 1 1 0%;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  align-items: center;
+  gap: 0.25rem;
+  color: #9ca3af;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.metaDeadline {
+  gap: 0.375rem;
+}
+
+@media (min-width: 768px) {
+  .categoryLabel {
+    font-size: 11px;
+  }
+  .taskText {
+    font-size: 13px;
+  }
+}

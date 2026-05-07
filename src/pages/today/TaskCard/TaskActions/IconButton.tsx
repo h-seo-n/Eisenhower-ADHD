@@ -1,3 +1,5 @@
+import styles from './IconButton.module.css';
+
 interface IconButtonProps {
   onClick: () => void;
   className: string;
@@ -9,7 +11,7 @@ function IconButton({ onClick, className, icon }: IconButtonProps) {
     <button
       type="button"
       onClick={onClick}
-      className={`w-6 h-6 flex items-center justify-center rounded-lg transition-colors ${className}`}
+      className={`${styles.button} ${className}`}
     >
       {icon}
     </button>

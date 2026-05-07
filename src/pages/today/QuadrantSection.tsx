@@ -3,6 +3,7 @@ import TaskCard from "./TaskCard";
 import { useTranslation } from "react-i18next";
 import { getQuadrantInfo } from "@/utils/taskCalculator";
 import { motion } from 'framer-motion';
+import styles from './QuadrantSection.module.css';
 
 interface QuadrantSectionProps {
   quadrant: Quadrant;
@@ -22,20 +23,21 @@ function QuadrantSection({ quadrant, tasks, onToggle, onSelect, onStartTimer, on
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`${info.color} rounded-lg p-4 min-h-[200px] h-full`}
+      className={styles.section}
+      style={{ backgroundColor: info.bg }}
     >
-      <div className="mb-4">
-        <h2 className={`text-lg font-bold ${info.textColor}`}>
+      <div className={styles.header}>
+        <h2 className={styles.title} style={{ color: info.text }}>
           {t(`quadrant.${quadrant}.title`)}
         </h2>
-        <p className={`text-xs ${info.textColor} opacity-70`}>
+        <p className={styles.subtitle} style={{ color: info.text }}>
           {t(`quadrant.${quadrant}.subtitle`)}
         </p>
       </div>
 
-      <div className="space-y-2">
+      <div className={styles.list}>
         {tasks.length === 0 ? (
-          <p className="text-gray-400 text-xs text-center py-4">
+          <p className={styles.empty}>
             {t('today.noTasks')}
           </p>
         ) : (

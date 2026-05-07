@@ -7,6 +7,7 @@ import FloatingButton from '@/components/feature/FloatingButton';
 import { useTranslation } from 'react-i18next';
 import useCelebration from './celebration';
 import QuadrantSection from './QuadrantSection';
+import styles from './page.module.css';
 
 
 interface TodayProps {
@@ -80,21 +81,24 @@ export default function Today({
   }, []);
 
   const tasksByQuadrant = useCallback(
-    (quadrant: Quadrant) => tasks.filter((t) => t.quadrant === quadrant),
+    (quadrant: Quadrant) =>
+      tasks
+        .filter((t) => t.quadrant === quadrant)
+        .sort((a, b) => Number(a.completed) - Number(b.completed)),
     [tasks],
   );
 
   return (
-    <div className="pb-20 relative">
+    <div className={styles.container}>
       {/* Header */}
-      <div className="bg-[#073B4C] text-white p-6 rounded-b-3xl">
-        <h1 className="text-2xl font-bold mb-2">{t('today.title')}</h1>
-        <p className="text-slate-300 text-sm">{t('today.subtitle')}</p>
+      <div className={styles.header}>
+        <h1 className={styles.title}>{t('today.title')}</h1>
+        <p className={styles.subtitle}>{t('today.subtitle')}</p>
       </div>
 
       {/* Quadrant Grid */}
-      <div className="p-4 h-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
+      <div className={styles.body}>
+        <div className={styles.grid}>
           {QUADRANTS.map((quadrant) => (
             <QuadrantSection
               key={quadrant}
@@ -111,8 +115,8 @@ export default function Today({
       </div>
 
       {/* FAB */}
-      <div className="fixed bottom-[calc(5rem+1.5rem)] left-0 right-0 mx-auto w-full max-w-md px-6 pointer-events-none z-50">
-        <div className="flex justify-end pointer-events-auto">
+      <div className={styles.fabWrapper}>
+        <div className={styles.fabInner}>
           <FloatingButton onClick={handleOpenNewTask} />
         </div>
       </div>

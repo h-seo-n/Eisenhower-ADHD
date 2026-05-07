@@ -9,6 +9,7 @@ import ImportanceSlider from './sections/ImportanceSlider';
 import DurationField from './sections/DurationField';
 import DeadlineField from './sections/DeadlineField';
 import SubtaskEditor from './sections/SubtaskEditor';
+import styles from './PrioritizeModal.module.css';
 
 interface PrioritizeModalProps {
   isOpen: boolean;
@@ -28,7 +29,7 @@ export default function PrioritizeModal({ isOpen, onClose, task, onSaveTask, onS
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={t('prioritize.title')}>
-      <div className="space-y-6">
+      <div className={styles.form}>
         <TaskTitleField
           value={form.content}
           onChange={form.setContent}
@@ -79,7 +80,7 @@ export default function PrioritizeModal({ isOpen, onClose, task, onSaveTask, onS
 
         <button
           onClick={form.handleSave}
-          className="w-full bg-teal-500 text-white py-3 rounded-lg font-medium hover:bg-teal-600 transition-colors whitespace-nowrap"
+          className={styles.saveButton}
         >
           {t('prioritize.saveToToday')}
         </button>

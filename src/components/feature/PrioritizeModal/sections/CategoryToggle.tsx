@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import styles from './sections.module.css';
 
 interface CategoryToggleProps {
   checked: boolean;
@@ -8,15 +9,15 @@ interface CategoryToggleProps {
 export default function CategoryToggle({ checked, onChange }: CategoryToggleProps) {
   const { t } = useTranslation();
   return (
-    <div className="flex gap-3">
+    <div className={styles.toggleRow}>
       <input
         type="checkbox"
         id="subtask"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        className="w-5 h-5 rounded border-gray-300 text-teal-500 focus:ring-teal-500 cursor-pointer flex-shrink-0 items-center"
+        className={styles.checkbox}
       />
-      <label htmlFor="subtask" className="text-sm font-medium text-gray-700 gap-2">
+      <label htmlFor="subtask" className={styles.toggleLabel}>
         {t('prioritize.divideToSubtasks')}
       </label>
     </div>

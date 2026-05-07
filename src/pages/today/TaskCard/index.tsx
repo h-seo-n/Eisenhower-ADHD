@@ -3,6 +3,7 @@ import TaskActions from "./TaskActions";
 import { Clock } from "lucide-react";
 import { Calendar } from "lucide-react";
 import { useDeadlineLabels } from "@/hooks/useDeadlineLabels";
+import styles from './TaskCard.module.css';
 
 interface TaskCardProps {
   task: Task;
@@ -15,38 +16,41 @@ interface TaskCardProps {
 }
 
 function TaskCard({ task, quadrant, onToggle, onSelect, onStartTimer, onStore, onDelete }: TaskCardProps) {
-  const completedClass = task.completed ? 'line-through opacity-50' : '';
-
   const deadlineLabels = useDeadlineLabels();
 
   return (
-    <div className="flex items-start gap-4 bg-white rounded-lg px-5 py-4 shadow-sm border border-gray-100">
+    <div className={styles.card}>
         {/* Checkbox */}
         <input
           type="checkbox"
           checked={task.completed}
           onChange={() => onToggle(task)}
-          className="w-5 h-5 rounded border-gray-300 text-teal-500 focus:ring-teal-500 cursor-pointer flex-shrink-0"
+          className={styles.checkbox}
         />
 
         {/* Task content */}
-        <div className="flex flex-wrap items-start justify-between flex-1 min-w-0 gap-y-2 gap-x-3" onClick={() => onSelect(task)}>
+        <div className={styles.body} onClick={() => onSelect(task)}>
           {task.superCategory ? (
-            <p className={`max-w-full text-[12px] md:text-[11px] text-gray-500 break-words ${task.superCategory.completed ? 'line-through opacity-50' : ''}`}>
-              {task.superCategory.text}
-            </p>
+            <div>
+              <p className={`${styles.categoryLabel} ${task.superCategory.completed ? styles.struck : ''}`}>
+                {task.superCategory.text}
+              </p>
+              <p className={`${styles.taskText} ${task.completed ? styles.struck : ''}`}>
+              {task.text}
+              </p>
+            </div>
           ) : (
-          <p className={`max-w-full break-words text-sm md:text-[13px] text-gray-900 ${completedClass}`}>
+          <p className={`${styles.taskText} ${task.completed ? styles.struck : ''}`}>
             {task.text}
           </p>
           )}
-          <div className="flex items-center justify-end gap-3 flex-1">
-            <span className="flex flex-nowrap whitespace-nowrap items-center gap-1 text-gray-400 text-sm">
+          <div className={styles.metaRow}>
+            <span className={styles.meta}>
               <Clock width={16}/>
               {`${task.hours}h ${task.minutes}m`}
             </span>
             {task.deadline !== 'No Deadline' && (
-              <span className="flex items-center flex-nowrap whitespace-nowrap gap-1.5 text-gray-400 text-sm">
+              <span className={`${styles.meta} ${styles.metaDeadline}`}>
                 <Calendar width={16}/>
                 {task.deadline === 'Specific Date' && task.specificDate
                   ? (task.specificDate instanceof Date ? task.specificDate : new Date(task.specificDate)).toLocaleString([], { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })

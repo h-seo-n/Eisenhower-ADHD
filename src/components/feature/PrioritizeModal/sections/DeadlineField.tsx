@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import type { DeadlineType } from '@/types/task';
 import { toDatetimeLocalString, parseDatetimeLocal } from '@/utils/dateUtils';
 import { useDeadlineLabels } from '@/hooks/useDeadlineLabels';
+import styles from './sections.module.css';
 
 const DEADLINE_OPTIONS: DeadlineType[] = ['Today', 'Tomorrow', 'Specific Date', 'No Deadline'];
 
@@ -26,16 +27,16 @@ export default function DeadlineField({
   const { t } = useTranslation();
 
   const deadlineLabels = useDeadlineLabels();
-  
+
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
-        <Calendar className="w-4 h-4" />
+      <label className={styles.fieldLabel}>
+        <Calendar className={styles.iconSm} />
         {t(labelKey)}
       </label>
-      <div className="space-y-2">
+      <div className={styles.deadlineList}>
         {DEADLINE_OPTIONS.map((option) => (
-          <label key={option} className="flex items-center gap-3 cursor-pointer">
+          <label key={option} className={styles.deadlineOption}>
             <input
               type="radio"
               name="deadline"
@@ -43,9 +44,9 @@ export default function DeadlineField({
               checked={deadline === option}
               onChange={(e) => onDeadlineChange(e.target.value as DeadlineType)}
               disabled={disabled}
-              className="w-4 h-4 text-teal-500 focus:ring-teal-500"
+              className={styles.radio}
             />
-            <span className="text-sm text-gray-700">{deadlineLabels[option]}</span>
+            <span className={styles.deadlineOptionLabel}>{deadlineLabels[option]}</span>
           </label>
         ))}
       </div>
@@ -54,7 +55,7 @@ export default function DeadlineField({
           type="datetime-local"
           value={toDatetimeLocalString(specificDate)}
           onChange={(e) => onSpecificDateChange(parseDatetimeLocal(e.target.value))}
-          className="mt-3 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
+          className={`${styles.input} ${styles.deadlineDate}`}
         />
       )}
     </div>

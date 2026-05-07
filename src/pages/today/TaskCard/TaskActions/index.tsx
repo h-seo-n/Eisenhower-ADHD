@@ -1,6 +1,7 @@
 import { Quadrant, Task } from "@/types/task";
 import IconButton from "./IconButton";
 import { Archive, Play, Trash2 } from "lucide-react";
+import styles from './TaskActions.module.css';
 
 interface TaskActionsProps {
   task: Task;
@@ -16,25 +17,25 @@ function TaskActions({ task, quadrant, onStartTimer, onStore, onDelete }: TaskAc
   const showArchive = task.completed;
 
   return (
-    <div className="flex items-start gap-2 flex-shrink-0">
+    <div className={styles.actions}>
       {showTimer && (
         <IconButton
           onClick={() => onStartTimer(task)}
-          className="text-teal-500 hover:bg-teal-50"
-          icon={<Play className="w-4 h-4" />}
+          className={styles.timerButton}
+          icon={<Play className={styles.icon} />}
         />
       )}
       {showArchive && (
         <IconButton
           onClick={() => onStore(task.id)}
-          className="text-gray-400 hover:text-zinc-500 hover:bg-zinc-50"
-          icon={<Archive className="w-4 h-4" />}
+          className={styles.archiveButton}
+          icon={<Archive className={styles.icon} />}
         />
       )}
       <IconButton
         onClick={() => onDelete(task.id)}
-        className="text-gray-400 hover:text-red-400 hover:bg-zinc-50"
-        icon={<Trash2 className="w-4 h-4" />}
+        className={styles.deleteButton}
+        icon={<Trash2 className={styles.icon} />}
       />
     </div>
   );

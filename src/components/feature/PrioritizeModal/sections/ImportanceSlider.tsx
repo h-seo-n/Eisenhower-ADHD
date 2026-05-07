@@ -1,5 +1,6 @@
 import { AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import styles from './sections.module.css';
 
 interface ImportanceSliderProps {
   value: number;
@@ -13,23 +14,23 @@ export default function ImportanceSlider({ value, onChange, disabled, labelKey =
   const labels = [t('importance.low'), t('importance.medium'), t('importance.high'), t('importance.critical')];
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
-        <AlertCircle className="w-4 h-4" />
+      <label className={styles.fieldLabel}>
+        <AlertCircle className={styles.iconSm} />
         {t(labelKey)}
       </label>
-      <div className="space-y-2">
+      <div className={styles.sliderStack}>
         <input
           type="range"
           min="1"
           max="4"
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-teal-500"
+          className={styles.slider}
           disabled={disabled}
         />
-        <div className="flex justify-between text-xs text-gray-500">
+        <div className={styles.sliderLabels}>
           {labels.map((label, index) => (
-            <span key={label} className={value === index + 1 ? 'font-semibold text-teal-600' : ''}>
+            <span key={label} className={value === index + 1 ? styles.sliderLabelActive : ''}>
               {label}
             </span>
           ))}

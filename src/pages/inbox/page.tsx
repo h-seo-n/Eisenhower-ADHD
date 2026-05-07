@@ -6,6 +6,7 @@ import PrioritizeModal from '../../components/feature/PrioritizeModal';
 import InboxCategoryItem from '@/components/feature/InboxCategoryItem';
 import FloatingButton from '@/components/feature/FloatingButton';
 import { useTranslation } from 'react-i18next';
+import styles from './page.module.css';
 
 interface InboxProps {
   tasks: Task[];
@@ -64,46 +65,38 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
   }, []);
 
   return (
-    <div className="pb-20">
-      <div className="bg-[#06D6A0] text-white p-6 rounded-b-3xl">
-        <h1 className="text-2xl font-bold mb-2">{t('inbox.title')}</h1>
-        <p className="text-teal-50 text-sm">{t('inbox.subtitle')}</p>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>{t('inbox.title')}</h1>
+        <p className={styles.subtitle}>{t('inbox.subtitle')}</p>
       </div>
 
-      <div className="p-4 space-y-2">
-        <div className="flex gap-2">
-          <div className="flex-1 relative">
+      <div className={styles.body}>
+        <div className={styles.inputRow}>
+          <div className={styles.inputWrapper}>
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyUp={handleKeyPress}
               placeholder={t('inbox.placeholder')}
-              className="w-full px-4 py-3 pr-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
+              className={styles.input}
             />
             {inputValue && (
-              <button
-                onClick={handleClear}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors cursor-pointer rounded-full hover:bg-gray-100"
-              >
-                <X className="w-4 h-4" />
+              <button onClick={handleClear} className={styles.clearButton}>
+                <X className={styles.clearIcon} />
               </button>
             )}
           </div>
-          {/* <button
-            onClick={handleAddByClick}
-            className="w-12 h-12 flex items-center justify-center bg-teal-500 text-white rounded-xl hover:bg-teal-600 transition-colors shadow-md whitespace-nowrap"
-          >
-            <Plus className="w-5 h-5" />
-          </button> */}
         </div>
 
-        <div className="space-y-2">
-          {inboxTasks.length === 0 && inboxCategories.length === 0 && 
-            <div className="text-center py-12 text-gray-400">
-              <p className="text-sm">{t('inbox.empty')}</p>
-            </div>}
-              
+        <div className={styles.list}>
+          {inboxTasks.length === 0 && inboxCategories.length === 0 && (
+            <div className={styles.empty}>
+              <p className={styles.emptyText}>{t('inbox.empty')}</p>
+            </div>
+          )}
+
           {inboxCategories.map((catItem) => {
             const categoryFound = categories.find(c => c.id === catItem.category.id);
             console.log("category found:", categoryFound);
@@ -115,30 +108,30 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
                   onAddSubtask={onAddSubtask}
                   onDeleteTask={onDeleteTask}
                   onSelectTask={setSelectedTask}
-              />                  
+              />
             );
           })}
-            
+
           {inboxTasks.map((task) => (
               <motion.div
                 key={task.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow cursor-pointer"
+                className={styles.taskCard}
                 onClick={() => setSelectedTask(task)}
               >
-                <div className="flex items-center gap-3">
-                  <div className="flex-1">
-                    <p className="text-gray-900 text-sm">{task.text}</p>
+                <div className={styles.taskRow}>
+                  <div className={styles.taskTextWrapper}>
+                    <p className={styles.taskText}>{task.text}</p>
                   </div>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       onDeleteTask(task.id);
                     }}
-                    className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50"
+                    className={styles.deleteButton}
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className={styles.deleteIcon} />
                   </button>
                 </div>
               </motion.div>
@@ -147,9 +140,9 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
         </div>
       </div>
 
-      <div className="fixed bottom-[calc(5rem+1.5rem)] left-0 right-0 mx-auto w-full max-w-md px-6 pointer-events-none z-50">
-        <div className="flex justify-end pointer-events-auto">
-          <FloatingButton 
+      <div className={styles.fabWrapper}>
+        <div className={styles.fabInner}>
+          <FloatingButton
             onClick={() => {
               const newTask: Task = {
                 id: crypto.randomUUID(),
@@ -163,7 +156,7 @@ export default function Inbox({ tasks, categories, onAddTask, onAddSubtask, onDe
               };
               setSelectedTask(newTask);
             }}
-            className='bg-[#06D6A0]'
+            className={styles.fabButton}
           />
         </div>
       </div>

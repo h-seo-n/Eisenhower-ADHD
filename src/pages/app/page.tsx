@@ -7,12 +7,13 @@ import Today from '../today/page';
 import Stats from '../stats/page';
 import { useTranslation } from 'react-i18next';
 import { toDate } from '@/utils/dateUtils';
+import styles from './page.module.css';
 
 type TabType = 'inbox' | 'today' | 'stats';
 
 export default function App() {
   const { t, i18n } = useTranslation();
-  const [activeTab, setActiveTab] = useState<TabType>('today');
+  const [activeTab, setActiveTab] = useState<TabType>('inbox');
   const [tasks, setTasks] = useLocalStorage<Task[]>('daily-focus-tasks', [],
     (tasks) => tasks.map(t => ({
       ...t,
@@ -174,16 +175,16 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-[768px] mx-auto bg-white min-h-screen shadow-xl relative">
-        <header className="bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between sticky top-0 z-30">
-          <h1 className="text-lg font-bold text-gray-900">{t('app.title')}</h1>
-          <div className="text-right">
-            <p className="text-xl font-bold text-gray-900">{getCurrentDate()}</p>
+    <div className={styles.app}>
+      <div className={styles.shell}>
+        <header className={styles.header}>
+          <h1 className={styles.title}>{t('app.title')}</h1>
+          <div className={styles.dateBlock}>
+            <p className={styles.date}>{getCurrentDate()}</p>
           </div>
         </header>
 
-        <main className="relative">
+        <main className={styles.main}>
           {activeTab === 'inbox' && (
             <Inbox
               tasks={tasks}
@@ -211,20 +212,16 @@ export default function App() {
           {activeTab === 'stats' && <Stats tasks={tasks} archives={archivedTasks} />}
         </main>
 
-        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40">
-          <div className="max-w-[480px] mx-auto flex">
+        <nav className={styles.nav}>
+          <div className={styles.navInner}>
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex-1 flex flex-col items-center justify-center py-3 transition-colors ${
-                  activeTab === tab.id
-                    ? 'text-teal-500'
-                    : 'text-gray-400 hover:text-gray-600'
-                }`}
+                className={`${styles.tab} ${activeTab === tab.id ? styles.tabActive : styles.tabInactive}`}
               >
-                <tab.icon className="w-6 h-6 mb-1" />
-                <span className="text-xs font-medium whitespace-nowrap">{tab.label}</span>
+                <tab.icon className={styles.tabIcon} />
+                <span className={styles.tabLabel}>{tab.label}</span>
               </button>
             ))}
           </div>
